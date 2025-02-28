@@ -1,0 +1,42 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: encurtador-url-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: encurtador_url_db
+      MYSQL_USER: encurtador_user
+      MYSQL_PASSWORD: encurtador_password
+    command: 
+      - --default-authentication-plugin=mysql_native_password
+    ports:
+      - '3306:3306'
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - encurtador_network
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: encurtador-url-api
+    restart: always
+    ports:
+      - '3000:3000'
+    depends_on:
+      - mysql
+    environment:
+      DATABASE_URL: mysql://encurtador_user:encurtador_password@mysql:3306/encurtador_url_db
+    networks:
+      - encurtador_network
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+volumes:
+  mysql_data:
+
+networks:
+  encurtador_network:
