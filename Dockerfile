@@ -1,5 +1,7 @@
 FROM node:22.14
 
+ENV LANG=C.UTF-8
+
 WORKDIR /encurtador-url
 
 COPY package*.json ./
