@@ -25,12 +25,13 @@ model User {
 }
 
 model ShortenedUrl {
-  id        String    @id
-  longUrl   String    @db.VarChar(2048)
-  userId    String?
-  user      User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
-  clicks    Int       @default(0)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
+  id           String    @id
+  longUrl      String    @db.VarChar(2048)
+  shortenedUrl String    @db.VarChar(2048)
+  userId       String?
+  user         User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  clicks       Int       @default(0)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  deletedAt    DateTime?
 }
