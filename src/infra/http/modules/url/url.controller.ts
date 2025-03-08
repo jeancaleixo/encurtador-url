@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {
   Controller,
   Post,
@@ -19,17 +23,16 @@ import {
   ApiBearerAuth,
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwtAuth.Guard';
-import {
-  CreateUrlDto,
-  UpdateUrlDto,
-  UrlResponseDto,
-  UrlListResponseDto,
-} from './dto/url.dto';
+import { CreateUrlDto } from './dtos/createUrl.dto';
+import { UrlResponseDto } from './dtos/urlResponse.dto';
+import { UrlListResponseDto } from './dtos/urlListResponse.dto';
+import { UpdateUrlDto } from './dtos/updateUrl.dto';
 import { UrlShortenService } from '../../../../modules/urls/services/urlShortening.service';
 import { UrlRedirectService } from '../../../../modules/urls/services/redirect.service';
 import { UrlQueryService } from '../../../../modules/urls/services/listUrls.service';
 import { UrlUpdateService } from '../../../../modules/urls/services/updateUrl.service';
 import { UrlDeletionService } from '../../../../modules/urls/services/deleteUrl.service';
+import { Public } from '../auth/decorators/isPublic';
 
 @ApiTags('URLs')
 @Controller()
@@ -42,6 +45,7 @@ export class UrlController {
     private readonly urlDeletionService: UrlDeletionService,
   ) {}
 
+  @Public()
   @Post('shorten')
   @ApiOperation({ summary: 'Encurtar uma URL' })
   @ApiResponse({
@@ -69,6 +73,7 @@ export class UrlController {
       clicks: url.clicks,
       createdAt: url.createdAt,
       updatedAt: url.updatedAt,
+      deletedAt: url.deletedAt,
     };
   }
 
@@ -84,16 +89,7 @@ export class UrlController {
   async getUserUrls(@Req() req: any): Promise<UrlListResponseDto> {
     const urls = await this.urlQueryService.getUserUrls(req.user.id);
 
-    return {
-      urls: urls.map((url) => ({
-        id: url.id,
-        longUrl: url.longUrl,
-        shortenedUrl: url.shortenedUrl,
-        clicks: url.clicks,
-        createdAt: url.createdAt,
-        updatedAt: url.updatedAt,
-      })),
-    };
+    return new UrlListResponseDto(urls, urls.length, 1, urls.length);
   }
 
   @Put('urls/:id')
@@ -125,6 +121,7 @@ export class UrlController {
       clicks: url.clicks,
       createdAt: url.createdAt,
       updatedAt: url.updatedAt,
+      deletedAt: url.deletedAt,
     };
   }
 

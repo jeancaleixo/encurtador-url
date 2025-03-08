@@ -2,9 +2,9 @@ FROM node:22.14
 
 WORKDIR /encurtador-url
 
-# Instalar dependências do sistema
+# Instalar dependências do sistema e cliente PostgreSQL
 RUN apt-get update && apt-get install -y \
-    default-mysql-client \
+    postgresql-client \
     && rm -rf /var/lib/apt/lists/*
 
 # Copiar arquivos de configuração
