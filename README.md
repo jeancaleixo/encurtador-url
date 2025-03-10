@@ -24,13 +24,13 @@ $ npm install
 
 Variaveis de ambiente:
 - POSTGRES_USER="seu user"
-POSTGRES_PASSWORD="sua senha"
-POSTGRES_DB=encurtador_url_db
-DATABASE_URL=postgresql://postgres:postgres@postgres:5432/encurtador_url_db
-SHADOW_DATABASE_URL=postgresql://postgres:postgres@postgres:5432/encurtador_url_db_shadow
-JWT_SECRET="key do jwt"
-JWT_EXPIRE=1d
-BASE_URL=http://localhost:3006
+- POSTGRES_PASSWORD="sua senha"
+- POSTGRES_DB=encurtador_url_db
+- DATABASE_URL=postgresql://postgres:postgres@postgres:5432/encurtador_url_db
+- SHADOW_DATABASE_URL=postgresql://postgres:postgres@postgres:5432/encurtador_url_db_shadow
+- JWT_SECRET="key do jwt"
+- JWT_EXPIRE=1d
+- BASE_URL=http://localhost:3006
 
 obs: a jwt secret pode ser feita no https://www.md5hashgenerator.com/ inserindo qualquer palavra
 
