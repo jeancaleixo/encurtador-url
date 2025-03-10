@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/require-await */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { Controller, HttpCode, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthRequestModel } from './models/authRequestModel';
 import { SignInService } from 'src/modules/auth/services/signIn.service';

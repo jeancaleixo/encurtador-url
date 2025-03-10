@@ -8,7 +8,7 @@ export class UpdateUrlDto {
   })
   @IsNotEmpty({ message: 'A URL não pode estar vazia' })
   @IsUrl({}, { message: 'URL inválida' })
-  longUrl: string; // Removido o opcional (
+  longUrl: string;
   @IsOptional()
   @IsString()
   shortenedUrl?: string;

@@ -40,10 +40,10 @@ export class UrlRepository {
     return this.mapToEntity(url);
   }
 
-  async findByShortUrl(shortUrl: string): Promise<Url | null> {
+  async findByShortUrl(shortCode: string): Promise<Url | null> {
     const url = await this.prisma.shortenedUrl.findFirst({
       where: {
-        shortenedUrl: shortUrl,
+        shortenedUrl: shortCode,
         deletedAt: null,
       },
     });

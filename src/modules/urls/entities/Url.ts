@@ -53,8 +53,8 @@ export class Url {
     return this.props.shortenedUrl;
   }
 
-  get userId(): string | null | undefined {
-    return this.props.userId;
+  get userId(): string | null {
+    return this.props.userId ?? null;
   }
 
   get clicks(): number {

@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {
@@ -23,6 +22,7 @@ import {
   ApiBearerAuth,
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwtAuth.Guard';
+import { OptionalJwtAuthGuard } from '../auth/guards/optionalJwtAuth.Guard';
 import { CreateUrlDto } from './dtos/createUrl.dto';
 import { UrlResponseDto } from './dtos/urlResponse.dto';
 import { UrlListResponseDto } from './dtos/urlListResponse.dto';
@@ -46,6 +46,7 @@ export class UrlController {
   ) {}
 
   @Public()
+  @UseGuards(OptionalJwtAuthGuard)
   @Post('shorten')
   @ApiOperation({ summary: 'Encurtar uma URL' })
   @ApiResponse({
@@ -58,9 +59,7 @@ export class UrlController {
     @Body() createUrlDto: CreateUrlDto,
     @Req() req: any,
   ): Promise<UrlResponseDto> {
-    // Verificar se o usuário está autenticado
     const userId = req.user?.id;
-
     const url = await this.urlShortenService.shortenUrl(
       createUrlDto.longUrl,
       userId,
@@ -69,8 +68,9 @@ export class UrlController {
     return {
       id: url.id,
       longUrl: url.longUrl,
-      shortenedUrl: url.shortenedUrl,
+      shortenedUrl: `${this.urlShortenService.baseUrl}/${url.shortenedUrl}`,
       clicks: url.clicks,
+      userId: url.userId,
       createdAt: url.createdAt,
       updatedAt: url.updatedAt,
       deletedAt: url.deletedAt,
@@ -88,7 +88,6 @@ export class UrlController {
   })
   async getUserUrls(@Req() req: any): Promise<UrlListResponseDto> {
     const urls = await this.urlQueryService.getUserUrls(req.user.id);
-
     return new UrlListResponseDto(urls, urls.length, 1, urls.length);
   }
 
@@ -117,8 +116,9 @@ export class UrlController {
     return {
       id: url.id,
       longUrl: url.longUrl,
-      shortenedUrl: url.shortenedUrl,
+      shortenedUrl: `${this.urlShortenService.baseUrl}/${url.shortenedUrl}`,
       clicks: url.clicks,
+      userId: url.userId,
       createdAt: url.createdAt,
       updatedAt: url.updatedAt,
       deletedAt: url.deletedAt,
@@ -141,6 +141,7 @@ export class UrlController {
     res.status(HttpStatus.NO_CONTENT).send();
   }
 
+  @Public()
   @Get(':shortCode')
   @ApiOperation({ summary: 'Redirecionar para URL original' })
   @ApiResponse({ status: 302, description: 'Redirecionado para URL original' })

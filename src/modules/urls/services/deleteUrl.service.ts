@@ -14,7 +14,6 @@ export class UrlDeletionService {
   ) {}
 
   async deleteUrl(id: string, userId: string): Promise<void> {
-    // Verifica se a URL existe e pertence ao usuário
     const url = await this.urlQueryService.getUrlById(id);
 
     if (!url) {
@@ -31,7 +30,6 @@ export class UrlDeletionService {
       );
     }
 
-    // Realiza exclusão lógica
     url.deletedAt = new Date();
     url.updatedAt = new Date();
 

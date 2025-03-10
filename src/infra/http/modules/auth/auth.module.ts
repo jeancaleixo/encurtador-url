@@ -8,6 +8,8 @@ import { SignInDTOValidateMiddleware } from './middleware/signInDTOValidate.midd
 import { SignInService } from 'src/modules/auth/services/signIn.service';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from 'src/modules/auth/strategies/jwt.strategy';
+import { OptionalJwtAuthGuard } from './guards/optionalJwtAuth.Guard';
+import { JwtAuthGuard } from './guards/jwtAuth.Guard';
 
 @Module({
   controllers: [AuthController],
@@ -19,7 +21,15 @@ import { JwtStrategy } from 'src/modules/auth/strategies/jwt.strategy';
       signOptions: { expiresIn: process.env.JWT_EXPIRE },
     }),
   ],
-  providers: [LocalStrategy, JwtStrategy, ValidateUserService, SignInService],
+  providers: [
+    LocalStrategy,
+    JwtStrategy,
+    JwtAuthGuard,
+    OptionalJwtAuthGuard,
+    ValidateUserService,
+    SignInService,
+  ],
+  exports: [JwtAuthGuard, OptionalJwtAuthGuard],
 })
 export class AuthModule {
   configure(consumer: MiddlewareConsumer) {

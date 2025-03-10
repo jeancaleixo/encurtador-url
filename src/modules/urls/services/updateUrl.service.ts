@@ -20,7 +20,6 @@ export class UrlUpdateService {
     userId: string,
     newLongUrl: string,
   ): Promise<Url> {
-    // Verifica se a URL existe e pertence ao usuário
     const url = await this.urlQueryService.getUrlById(id);
 
     if (!url) {
@@ -43,7 +42,6 @@ export class UrlUpdateService {
       throw new BadRequestException('URL inválida');
     }
 
-    // Atualiza a URL
     url.longUrl = newLongUrl;
     url.updatedAt = new Date();
 

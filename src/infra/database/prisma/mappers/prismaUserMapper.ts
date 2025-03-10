@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { User as PrismaUser } from '@prisma/client';
 import { User } from 'src/modules/users/entities/User';
 

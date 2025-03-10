@@ -5,6 +5,7 @@ export class UrlResponseDto {
   id: string;
   longUrl: string;
   shortenedUrl: string;
+  userId: string | null;
   clicks: number;
   createdAt: Date;
   updatedAt: Date;
@@ -17,6 +18,7 @@ export class UrlResponseDto {
     this.longUrl = url.longUrl;
     this.shortenedUrl = url.shortenedUrl;
     this.clicks = url.clicks;
+    this.userId = url.userId;
     this.createdAt = url.createdAt;
     this.updatedAt = url.updatedAt;
     this.deletedAt = url.deletedAt;

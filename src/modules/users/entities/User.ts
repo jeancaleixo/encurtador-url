@@ -1,10 +1,12 @@
 import { randomUUID } from 'crypto';
 import { Replace } from 'src/common/replace';
+import { Url } from '../../urls/entities/Url';
 
 interface UserSchema {
   email: string;
   password: string;
   name: string;
+  urls?: Url[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -19,6 +21,7 @@ export class User {
   ) {
     this.props = {
       ...props,
+      urls: props.urls || [],
       createdAt: props.createdAt || new Date(),
       updatedAt: props.updatedAt || new Date(),
     };
@@ -51,6 +54,10 @@ export class User {
 
   set name(name: string) {
     this.props.name = name;
+  }
+
+  get urls(): Url[] | undefined {
+    return this.props.urls;
   }
 
   get createdAt(): Date {

@@ -16,14 +16,12 @@ export class UrlRedirectService {
   }
 
   async getOriginalUrl(shortCode: string): Promise<Url> {
-    const shortUrl = `${this.baseUrl}/${shortCode}`;
-    const url = await this.urlRepository.findByShortUrl(shortUrl);
+    const url = await this.urlRepository.findByShortUrl(shortCode);
 
     if (!url || url.deletedAt !== null) {
       throw new NotFoundException('URL encurtada não encontrada');
     }
 
-    // Incrementando o contador de cliques
     url.clicks = url.clicks + 1;
     await this.urlRepository.update(url);
 
